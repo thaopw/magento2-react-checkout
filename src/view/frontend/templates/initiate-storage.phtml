@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
-use Hyva\ReactCheckout\ViewModel\CspNonceProvider;
-use Hyva\ReactCheckout\ViewModel\ReactCheckoutLocalStorage;
+use FriendsOfHyva\ReactCheckout\ViewModel\CspNonceProvider;
+use FriendsOfHyva\ReactCheckout\ViewModel\ReactCheckoutLocalStorage;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
 
@@ -16,12 +16,18 @@ $cspNonceProvider = $block->getData('csp_nonce_provider');
 ?>
 <script nonce="<?= $escaper->escapeHtml($cspNonceProvider->getNonce()) ?>">
     var storageKey = 'hyva-checkout-storage';
+    var hyvaReactStorageInitialized = false;
 
     function _toNumber(value) {
         return parseInt(value, 10);
     }
 
     function initializeHyvaReactStorage() {
+        if (hyvaReactStorageInitialized) {
+            return;
+        }
+        hyvaReactStorageInitialized = true;
+
         var storageConfig =
             JSON.parse('<?= $escaper->escapeJs($localStorageViewModel->getLocalStorageConfig()) ?>') || {};
 
@@ -61,5 +67,11 @@ $cspNonceProvider = $block->getData('csp_nonce_provider');
         window.localStorage.setItem(storageKey, JSON.stringify(storageData));
     }
 
-    window.addEventListener("private-content-loaded", initializeHyvaReactStorage);
+    window.addEventListener('private-content-loaded', initializeHyvaReactStorage);
+
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        initializeHyvaReactStorage();
+    } else {
+        document.addEventListener('DOMContentLoaded', initializeHyvaReactStorage);
+    }
 </script>

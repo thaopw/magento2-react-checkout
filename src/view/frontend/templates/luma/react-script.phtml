@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use Hyva\ReactCheckout\ViewModel\CspNonceProvider;
+use FriendsOfHyva\ReactCheckout\ViewModel\CspNonceProvider;
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
 
@@ -10,7 +10,7 @@ use Magento\Framework\View\Element\Template;
 /** @var CspNonceProvider $cspNonceProvider */
 
 $cspNonceProvider = $block->getData('csp_nonce_provider');
-$buildJsFile = 'Hyva_ReactCheckout::js/react-checkout.js';
+$buildJsFile = 'FriendsOfHyva_ReactCheckout::js/react-checkout.js';
 ?>
 <script nonce="<?= $escaper->escapeHtml($cspNonceProvider->getNonce()) ?>">
     function loadReactCartScript () {
