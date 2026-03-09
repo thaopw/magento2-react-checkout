@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Hyva\ReactCheckout\ViewModel;
+namespace FriendsOfHyva\ReactCheckout\ViewModel;
 
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Customer\Model\Address;
